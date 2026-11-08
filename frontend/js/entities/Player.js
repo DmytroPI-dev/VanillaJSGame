@@ -1,11 +1,11 @@
-import { GAME_WIDTH, GAME_HEIGHT } from "../constants.js";
+import { GAME_WIDTH, GAME_HEIGHT } from "../core/constants.js";
 
 export class Player {
   constructor() {
-    this.x = GAME_WIDTH / 2;
-    this.y = GAME_HEIGHT / 2;
     this.width = 64;
     this.height = 64;
+    this.x = (GAME_WIDTH - this.width) / 2;
+    this.y = (GAME_HEIGHT - this.height) / 2;
     this.speed = 200;
 
     // Multipliers (for upgrades)
