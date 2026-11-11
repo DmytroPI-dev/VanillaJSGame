@@ -8,21 +8,24 @@ export class Game {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
     this.renderSystem = new RenderSystem(this.canvas);
-    
+
     this.imageManager = new ImageManager();
     this.imageManager.loadAll();
-    this.renderSystem  = new RenderSystem(this.canvas, this.imageManager);
-    
+    this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
+
     this.player = new Player();
     this.keys = {};
     this.lastTime = 0;
+    this.state = "menu";
 
     this.init();
   }
+
   init() {
     this.resizeCanvas();
     window.addEventListener("resize", () => this.resizeCanvas());
     this.setupInput();
+    this.setupUI();
 
     // start game loop
     this.lastTime = performance.now();
@@ -32,30 +35,85 @@ export class Game {
     const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1);
     this.lastTime = timestamp;
     this.update(dt);
-    this.renderSystem.render(this.player);
+    this.render();
     requestAnimationFrame((t) => this.gameLoop(t));
   }
   update(dt) {
+    if (this.state !== "playing") return;
     this.player.update(dt, this.keys);
   }
+
+  render() {
+    if (this.state === "menu") {
+      this.ctx.fillStyle = "#0f3460";
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    } else {
+      this.renderSystem.render(this.player);
+    }
+  }
+
   setupInput() {
     window.addEventListener("keydown", (e) => {
-      const key = e.key.toLowerCase();
-      // A held key can keep sending repeat events after the context menu opens.
-      if (!e.repeat) this.keys[key] = true;
+      this.keys[e.key.toLowerCase()] = true;
+      if (e.key === "Escape") {
+        if (this.state === "playing") {
+          this.pauseGame();
+        } else if (this.state === "paused") {
+          this.resumeGame();
+        }
+      }
     });
+
     window.addEventListener("keyup", (e) => {
       this.keys[e.key.toLowerCase()] = false;
     });
+
     // Clear all keys when context menu opens
     window.addEventListener("contextmenu", () => {
       this.keys = {};
     });
+
     // Clear all keys when window loses focus
     window.addEventListener("blur", () => {
       this.keys = {};
     });
   }
+
+  setupUI() {
+    document.getElementById("playBtn").onclick = () => this.startGame();
+    document.getElementById("quitBtn").onclick = () => this.quitToMenu();
+    document.getElementById("resumeBtn").onclick = () => this.resumeGame();
+  }
+  hideAllPanels() {
+    document
+      .querySelectorAll(".ui-panel")
+      .forEach((p) => p.classList.remove("active"));
+  }
+  startGame() {
+    this.hideAllPanels();
+    this.state = "playing";
+  }
+
+  pauseGame() {
+    this.state = "paused";
+    document.getElementById("pauseMenu").classList.add("active");
+  }
+
+  resumeGame() {
+    this.state = "playing";
+    document.getElementById("pauseMenu").classList.remove("active");
+  }
+
+  quitToMenu() {
+    this.returnToMenu();
+  }
+
+  returnToMenu() {
+    this.state = "menu";
+    this.hideAllPanels();
+    document.getElementById("mainMenu").classList.add("active");
+  }
+
   resizeCanvas() {
     const ratio = 16 / 9;
     let w, h;

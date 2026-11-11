@@ -50,6 +50,13 @@ body {
   text-shadow: 0 0 20px rgba(74, 158, 255, 0.7);
 }
 
+.ui-panel h2 {
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: #4a9eff;
+  text-shadow: 0 0 20px rgba(74, 158, 255, 0.7);
+}
+
 /* UI panel buttons */
 button {
   background: #3a7edf;
