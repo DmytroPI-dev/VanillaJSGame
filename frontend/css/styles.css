@@ -25,3 +25,48 @@ body {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+
+.ui-panel {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 3px solid #4a9eff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
+  display: none;
+  z-index: 1000;
+}
+
+.ui-panel.active {
+  display: block;
+}
+
+.ui-panel h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  color: #4a9eff;
+  text-shadow: 0 0 20px rgba(74, 158, 255, 0.7);
+}
+
+/* UI panel buttons */
+button {
+  background: #3a7edf;
+  border: 2px solid #4a9eff;
+  padding: 12px 24px;
+  margin: 8px;
+  border-radius: 10px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Courier New", Courier, monospace;
+  box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
+}
+
+button:hover {
+  background: #357ab8;
+  box-shadow: 0 0 15px rgba(74, 158, 255, 0.5);
+  transform: translateY(-2px);
+}

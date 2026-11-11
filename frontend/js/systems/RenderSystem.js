@@ -13,21 +13,19 @@ export class RenderSystem {
     this.renderPlayer(player);
   }
   renderGrid() {
-    this.ctx.strokeStyle = "rgba(255, 255, 255, 1)";
-    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = "rgba(255, 255, 255, .1)";
+    this.ctx.lineWidth = 6;
+    this.ctx.beginPath();
 
     for (let i = 0; i <= GAME_WIDTH; i += GRID_SIZE) {
-      this.ctx.beginPath();
       this.ctx.moveTo(i, 0);
       this.ctx.lineTo(i, GAME_HEIGHT);
-      this.ctx.stroke();
     }
     for (let j = 0; j <= GAME_HEIGHT; j += GRID_SIZE) {
-      this.ctx.beginPath();
       this.ctx.moveTo(0, j);
       this.ctx.lineTo(GAME_WIDTH, j);
-      this.ctx.stroke();
     }
+    this.ctx.stroke();
   }
   renderPlayer(player) {
     const playerImage = this.imageManager.get("player");
